@@ -4,9 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#001233" />
-    <title>Hexadamn Studio - Free Tools for Windows and Web</title>
-    <meta name="description" content="Hexadamn Studio creates small, free tools for Windows and web to make your life easier. Discover our collection of utilities designed for simplicity and efficiency." />
-
+    <title>Hexadamn Studio - Free Fun Random Tools</title>
+    <meta name="description" content="Hexadamn Studio creates small, free tools for fun, check out our tools, it can be really useful or totally random." />
     <style>
         /* Global Styles */
         html {
@@ -417,7 +416,7 @@
     <section id="home" class="hero" aria-labelledby="heroHeading">
         <div class="hero-inner">
             <h2 id="heroHeading">Welcome to Hexadamn Studio</h2>
-            <p>We craft small, powerful, and free tools for Windows and the web to simplify your daily tasks. Join our community and boost your productivity today!</p>
+            <p>We craft small, random, and free tools for fun. Join our community and boost your productivity today!</p>
             <a href="#tools" class="cta-button" role="button">Explore Our Tools</a>
         </div>
     </section>
@@ -426,7 +425,7 @@
         <!-- About Section -->
         <section id="about" aria-labelledby="aboutHeading">
             <h2 id="aboutHeading">About Us</h2>
-            <p>Hexadamn is a passionate team dedicated to developing lightweight, user-friendly tools that solve real-world problems. Whether you're a developer, designer, or everyday user, our free utilities for Windows and web platforms are designed with simplicity in mind. We're just getting started—stay tuned for more innovative releases!</p>
+            <p>Hexadamn is a tiny but chaotic-creative team making craft tools — sometimes super useful, sometimes totally unhinged just for fun. Check out what we cook up next. We’re just getting started, so stay tuned for the drops!</p>
         </section>
 
         <!-- Tools Section -->
@@ -435,21 +434,21 @@
             <div class="tools-grid" id="toolsGrid">
                 <!-- Example tool cards: replace with real tools later -->
                 <div class="tool-card">
+                    <h3>Foodi64</h3>
+                    <p>Emoji-based encoder/decoder inspired by base64 - en/decoder</p>
+                    <a href="/foodi64" target="_blank" rel="noopener" class="btn">try it out</a>
+                </div>
+
+                <div class="tool-card">
                     <h3>Coming Soon</h3>
-                    <p>Small utilities for everyday tasks — sign up on Discord for the first release.</p>
+                    <p>Stay tuned, join Discord to chat in our community</p>
                     <a href="https://discord.gg/e9FMa8rxX3" target="_blank" rel="noopener" class="btn">Join Discord</a>
                 </div>
 
                 <div class="tool-card">
-                    <h3>Food64 (Prototype)</h3>
-                    <p>Emoji-based encoder/decoder inspired by base64 — preview on GitHub.</p>
-                    <a href="https://github.com/NoahLi404/HEXADAMN" target="_blank" rel="noopener" class="btn">View on GitHub</a>
-                </div>
-
-                <div class="tool-card">
-                    <h3>Windows Utility</h3>
-                    <p>Lightweight, no-install utilities for power users — coming soon.</p>
-                    <a href="https://discord.gg/e9FMa8rxX3" target="_blank" rel="noopener" class="btn">Notify me</a>
+                    <h3>Coming Soon</h3>
+                    <p>Stay tuned, join Discord to chat in our community</p>
+                    <a href="https://discord.gg/e9FMa8rxX3" target="_blank" rel="noopener" class="btn">Join Discord</a>
                 </div>
 
                 <!-- duplicate cards removed, add more as needed -->
@@ -478,7 +477,7 @@
 
     <!-- Footer -->
     <footer role="contentinfo">
-        <p>&copy; 2025 Hexadamn Studio. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        <p>&copy; 2025 Hexadamn Studio. All rights reserved.
         <div style="margin-top:8px;">
             <a href="https://discord.gg/e9FMa8rxX3" target="_blank" rel="noopener">Discord</a> |
             <a href="https://github.com/NoahLi404/HEXADAMN" target="_blank" rel="noopener">GitHub</a>
@@ -550,17 +549,6 @@
             }, { passive: true });
         })();
 
-        // Simple newsletter placeholder
-        function subscribeNewsletter() {
-            const email = document.getElementById('newsletterEmail').value.trim();
-            const msg = document.getElementById('newsletterMsg');
-            if (!email) return;
-            // Replace with real API call later
-            msg.textContent = 'Thanks — we will notify you on release!';
-            msg.classList.remove('visually-hidden');
-            setTimeout(() => msg.classList.add('visually-hidden'), 4000);
-        }
-
         // Improve logo behavior on mobile: show alt text as tooltip on long press (simple)
         (function(){
             const logo = document.getElementById('siteLogo');
@@ -568,7 +556,7 @@
             logo.addEventListener('touchstart', ()=> touchStartMs = Date.now());
             logo.addEventListener('touchend', ()=> {
                 const dt = Date.now() - touchStartMs;
-                if (dt > 600) alert('HEXADAMN — small free tools for Windows & web');
+                if (dt > 600) alert('HEXADAMN — small free random fun tools');
             });
         })();
     </script>
