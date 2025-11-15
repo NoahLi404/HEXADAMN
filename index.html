@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#001233" />
+    <title>Hexadamn Studio - Free Tools for Windows and Web</title>
+    <meta name="description" content="Hexadamn Studio creates small, free tools for Windows and web to make your life easier. Discover our collection of utilities designed for simplicity and efficiency." />
+
+    <style>
+        /* Global Styles */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        :root{
+            --bg: #0a0f1e;
+            --header: #001233;
+            --header-scrolled: #000b22;
+            --card: #1a1f3a;
+            --accent: #4da6ff;
+            --accent-strong: #3385ff;
+            --text: #e0e0e0;
+            --muted: #a0a0a0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        /* Header */
+        header {
+            background-color: var(--header);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            position: sticky;
+            top: 0;
+            z-index: 2000;
+            transition: background-color 0.25s ease, padding 0.25s ease;
+            backdrop-filter: blur(6px);
+        }
+
+        header.scrolled { background-color: var(--header-scrolled); padding: 10px 16px; }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo img {
+            height: 48px;
+            width: auto;
+            display: block;
+            border-radius: 8px;
+            transition: transform 0.45s ease;
+            will-change: transform;
+        }
+
+        .logo img:hover { transform: rotate(360deg); }
+
+        .logo h1 {
+            margin: 0;
+            font-size: 1.25rem;
+            color: #ffffff;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 18px;
+            align-items: center;
+        }
+
+        nav ul li a {
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 6px 8px;
+            border-radius: 6px;
+            transition: color 0.2s, background 0.2s, transform 0.15s;
+        }
+
+        nav ul li a:hover { color: #fff; transform: translateY(-1px); }
+
+        /* Mobile hamburger */
+        .hamburger {
+            display: none;
+            background: transparent;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .hamburger:focus { outline: 2px solid var(--accent); }
+
+        .hamburger .bar {
+            width: 20px;
+            height: 2px;
+            background: var(--text);
+            display: block;
+            margin: 4px 0;
+            transition: transform 0.25s, opacity 0.25s;
+        }
+
+        /* Mobile nav overlay */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0,10,30,0.95), rgba(0,10,30,0.98));
+            z-index: 1950;
+            padding: 80px 20px 20px;
+            overflow-y: auto;
+        }
+
+        .mobile-nav.open { display: block; }
+
+        .mobile-nav ul { display: flex; flex-direction: column; gap: 16px; align-items: center; margin: 0; padding: 0; list-style: none; }
+        .mobile-nav a { font-size: 1.25rem; color: var(--text); text-decoration: none; padding: 8px 16px; border-radius: 8px; }
+        .mobile-nav a:hover { background: rgba(77,166,255,0.06); color: #fff; }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0,18,51,0.75), rgba(0,18,51,0.75)), url('we/dont/need/a/banner/yet') center/cover no-repeat;
+            text-align: center;
+            padding: 96px 20px;
+            color: #ffffff;
+            position: relative;
+            overflow: hidden;
+            min-height: 380px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: -10%;
+            width: 140%;
+            height: 140%;
+            background: radial-gradient(circle, rgba(77,166,255,0.06) 0%, rgba(0,0,0,0) 55%);
+            animation: pulse 6s infinite;
+            pointer-events: none;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.25; }
+            100% { transform: scale(1); opacity: 0.5; }
+        }
+
+        .hero .hero-inner {
+            position: relative;
+            z-index: 2;
+            max-width: 980px;
+            padding: 8px;
+        }
+
+        .hero h2 {
+            font-size: clamp(1.6rem, 3vw, 2.6rem);
+            margin-bottom: 14px;
+            opacity: 0;
+            transform: translateY(18px);
+            animation: fadeInUp 0.9s forwards;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 1.6vw, 1.15rem);
+            max-width: 860px;
+            margin: 0 auto 22px;
+            opacity: 0;
+            transform: translateY(18px);
+            animation: fadeInUp 0.9s 0.25s forwards;
+        }
+
+        .cta-button {
+            background-color: var(--accent);
+            color: #001233;
+            padding: 12px 20px;
+            font-size: 1rem;
+            border-radius: 8px;
+            transition: background-color 0.2s, transform 0.15s;
+            display: inline-block;
+            font-weight: 700;
+            opacity: 0;
+            transform: translateY(18px);
+            animation: fadeInUp 0.9s 0.45s forwards;
+        }
+
+        .cta-button:hover { background-color: var(--accent-strong); transform: scale(1.03); text-decoration: none; }
+
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+        /* Sections */
+        main section {
+            padding: 56px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(18px);
+            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+        }
+        main section.visible { opacity: 1; transform: translateY(0); }
+
+        section h2 {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 24px;
+            color: #fff;
+        }
+
+        /* About Section */
+        #about p { font-size: 1.05rem; text-align: center; max-width: 880px; margin: 0 auto; color: var(--muted); }
+
+        /* Tools Section */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
+            gap: 18px;
+        }
+
+        .tool-card {
+            background-color: var(--card);
+            padding: 18px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.45);
+            text-align: center;
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .tool-card:hover { transform: translateY(-8px); box-shadow: 0 12px 28px rgba(77,166,255,0.12); }
+        .tool-card h3 { font-size: 1.15rem; margin-bottom: 8px; color: var(--accent); }
+        .tool-card p { margin-bottom: 14px; color: var(--muted); }
+
+        .tool-card .btn {
+            display: inline-block;
+            background-color: var(--accent);
+            color: #001233;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .tool-card .btn:hover { background-color: var(--accent-strong); transform: translateY(-2px); }
+
+        /* Contact Section */
+        #contact .join-btn {
+            display: inline-block;
+            background: linear-gradient(90deg,var(--accent),var(--accent-strong));
+            color: #001233;
+            padding: 12px 18px;
+            border-radius: 10px;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--accent);
+            color: #001233;
+            padding: 10px 12px;
+            border-radius: 50%;
+            font-size: 1.25rem;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            box-shadow: 0 8px 18px rgba(77,166,255,0.12);
+            transition: opacity 0.18s, transform 0.12s;
+        }
+
+        .back-to-top.show { display: flex; opacity: 1; }
+        .back-to-top:active { transform: scale(0.98); }
+
+        /* Footer */
+        footer {
+            background-color: var(--header);
+            text-align: center;
+            padding: 18px;
+            font-size: 0.9rem;
+            color: var(--muted);
+            margin-top: 24px;
+        }
+        footer a { color: var(--accent); margin: 0 8px; }
+
+        /* Newsletter */
+        #newsletter {
+            background-color: var(--card);
+            padding: 20px;
+            text-align: center;
+            margin: 28px auto;
+            max-width: 760px;
+            border-radius: 12px;
+        }
+        #newsletter h3 { font-size: 1.1rem; margin-bottom: 12px; }
+        #newsletter form { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+        #newsletter input {
+            background-color: transparent;
+            border: 1px solid var(--accent);
+            padding: 10px;
+            width: 260px;
+            border-radius: 8px;
+            color: var(--text);
+        }
+        #newsletter button {
+            background: var(--accent);
+            color: #001233;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            nav ul { display: none; }
+            .hamburger { display: inline-flex; }
+            .logo img { height: 44px; }
+        }
+
+        @media (max-width: 540px) {
+            .hero { padding: 60px 14px; min-height: 300px; }
+            main section { padding: 36px 14px; }
+            .logo h1 { font-size: 1rem; display: none; } /* compact logo text on very small screens */
+            .back-to-top { right: 12px; bottom: 12px; }
+        }
+
+        /* Small accessibility helper */
+        .visually-hidden {
+            position: absolute !important;
+            height: 1px; width: 1px;
+            overflow: hidden;
+            clip: rect(1px, 1px, 1px, 1px);
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header id="header" role="banner">
+        <div class="logo" aria-hidden="false">
+            <!-- Use HEXADAMN.png as requested. Provide srcset for retina devices and lazy loading -->
+            <img
+                src="HEXADAMN.png"
+                alt="Hexadamn Studio logo"
+                loading="lazy"
+                width="120"
+                height="48"
+                id="siteLogo"
+            >
+            <h1>HEXADAMN</h1>
+        </div>
+
+        <nav role="navigation" aria-label="Main navigation">
+            <ul id="desktopNav">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#tools">Tools</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+
+            <!-- Hamburger for mobile -->
+            <button class="hamburger" aria-controls="mobileNav" aria-expanded="false" id="hamburgerBtn" aria-label="Open menu">
+                <span class="bar" aria-hidden="true"></span>
+                <span class="bar" aria-hidden="true"></span>
+                <span class="bar" aria-hidden="true"></span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Mobile nav overlay -->
+    <div class="mobile-nav" id="mobileNav" aria-hidden="true" role="dialog" aria-label="Mobile menu">
+        <nav>
+            <ul>
+                <li><a href="#home" class="mobile-link">Home</a></li>
+                <li><a href="#about" class="mobile-link">About</a></li>
+                <li><a href="#tools" class="mobile-link">Tools</a></li>
+                <li><a href="#contact" class="mobile-link">Contact</a></li>
+                <li><a href="https://discord.gg/e9FMa8rxX3" target="_blank" rel="noopener" class="mobile-link">Discord</a></li>
+                <li><a href="https://github.com/NoahLi404/HEXADAMN" target="_blank" rel="noopener" class="mobile-link">GitHub</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero" aria-labelledby="heroHeading">
+        <div class="hero-inner">
+            <h2 id="heroHeading">Welcome to Hexadamn Studio</h2>
+            <p>We craft small, powerful, and free tools for Windows and the web to simplify your daily tasks. Join our community and boost your productivity today!</p>
+            <a href="#tools" class="cta-button" role="button">Explore Our Tools</a>
+        </div>
+    </section>
+
+    <main>
+        <!-- About Section -->
+        <section id="about" aria-labelledby="aboutHeading">
+            <h2 id="aboutHeading">About Us</h2>
+            <p>Hexadamn is a passionate team dedicated to developing lightweight, user-friendly tools that solve real-world problems. Whether you're a developer, designer, or everyday user, our free utilities for Windows and web platforms are designed with simplicity in mind. We're just getting started—stay tuned for more innovative releases!</p>
+        </section>
+
+        <!-- Tools Section -->
+        <section id="tools" aria-labelledby="toolsHeading">
+            <h2 id="toolsHeading">Our Tools</h2>
+            <div class="tools-grid" id="toolsGrid">
+                <!-- Example tool cards: replace with real tools later -->
+                <div class="tool-card">
+                    <h3>Coming Soon</h3>
+                    <p>Small utilities for everyday tasks — sign up on Discord for the first release.</p>
+                    <a href="https://discord.gg/e9FMa8rxX3" target="_blank" rel="noopener" class="btn">Join Discord</a>
+                </div>
+
+                <div class="tool-card">
+                    <h3>Food64 (Prototype)</h3>
+                    <p>Emoji-based encoder/decoder inspired by base64 — preview on GitHub.</p>
+                    <a href="https://github.com/NoahLi404/HEXADAMN" target="_blank" rel="noopener" class="btn">View on GitHub</a>
+                </div>
+
+                <div class="tool-card">
+                    <h3>Windows Utility</h3>
+                    <p>Lightweight, no-install utilities for power users — coming soon.</p>
+                    <a href="https://discord.gg/e9FMa8rxX3" target="_blank" rel="noopener" class="btn">Notify me</a>
+                </div>
+
+                <!-- duplicate cards removed, add more as needed -->
+            </div>
+        </section>
+
+        <!-- Newsletter -->
+        <section id="newsletter" aria-labelledby="newsletterHeading">
+            <h3 id="newsletterHeading">Get notified</h3>
+            <form id="newsletterForm" onsubmit="event.preventDefault(); subscribeNewsletter();">
+                <input type="email" id="newsletterEmail" placeholder="your email" aria-label="Email address" required />
+                <button type="submit">Subscribe</button>
+            </form>
+            <p id="newsletterMsg" class="visually-hidden" role="status"></p>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" aria-labelledby="contactHeading">
+            <h2 id="contactHeading">Get in Touch</h2>
+            <p style="text-align:center; color:var(--muted); margin-bottom:12px;">Join our community for early releases, discussions, and support.</p>
+            <div style="text-align:center;">
+                <a href="https://discord.gg/e9FMa8rxX3" target="_blank" rel="noopener" class="join-btn">Join our community</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer role="contentinfo">
+        <p>&copy; 2025 Hexadamn Studio. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        <div style="margin-top:8px;">
+            <a href="https://discord.gg/e9FMa8rxX3" target="_blank" rel="noopener">Discord</a> |
+            <a href="https://github.com/NoahLi404/HEXADAMN" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <a href="#home" class="back-to-top" id="backToTop" aria-label="Back to top">&#8679;</a>
+
+    <!-- JavaScript for Interactivity -->
+    <script>
+        // Header scroll effect
+        (function() {
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                header.classList.toggle('scrolled', window.scrollY > 60);
+            }, { passive: true });
+        })();
+
+        // Mobile nav toggle
+        (function() {
+            const hamburger = document.getElementById('hamburgerBtn');
+            const mobileNav = document.getElementById('mobileNav');
+
+            function setAria(open) {
+                hamburger.setAttribute('aria-expanded', String(open));
+                mobileNav.setAttribute('aria-hidden', String(!open));
+                document.body.style.overflow = open ? 'hidden' : '';
+            }
+
+            hamburger.addEventListener('click', () => {
+                const isOpen = mobileNav.classList.toggle('open');
+                setAria(isOpen);
+            });
+
+            // Close mobile nav when a mobile link is clicked
+            document.querySelectorAll('.mobile-link').forEach(a => {
+                a.addEventListener('click', () => {
+                    mobileNav.classList.remove('open');
+                    setAria(false);
+                });
+            });
+
+            // Close on Escape
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && mobileNav.classList.contains('open')) {
+                    mobileNav.classList.remove('open');
+                    setAria(false);
+                }
+            });
+        })();
+
+        // Fade-in sections on scroll (IntersectionObserver)
+        (function() {
+            const sections = document.querySelectorAll('main section, header, .hero');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('visible');
+                });
+            }, { threshold: 0.12 });
+            sections.forEach(s => observer.observe(s));
+        })();
+
+        // Back to top button
+        (function() {
+            const backToTop = document.getElementById('backToTop');
+            window.addEventListener('scroll', () => {
+                backToTop.classList.toggle('show', window.scrollY > 300);
+            }, { passive: true });
+        })();
+
+        // Simple newsletter placeholder
+        function subscribeNewsletter() {
+            const email = document.getElementById('newsletterEmail').value.trim();
+            const msg = document.getElementById('newsletterMsg');
+            if (!email) return;
+            // Replace with real API call later
+            msg.textContent = 'Thanks — we will notify you on release!';
+            msg.classList.remove('visually-hidden');
+            setTimeout(() => msg.classList.add('visually-hidden'), 4000);
+        }
+
+        // Improve logo behavior on mobile: show alt text as tooltip on long press (simple)
+        (function(){
+            const logo = document.getElementById('siteLogo');
+            let touchStartMs = 0;
+            logo.addEventListener('touchstart', ()=> touchStartMs = Date.now());
+            logo.addEventListener('touchend', ()=> {
+                const dt = Date.now() - touchStartMs;
+                if (dt > 600) alert('HEXADAMN — small free tools for Windows & web');
+            });
+        })();
+    </script>
+
+    <!-- three.js background (subtle particles, optimized for mobile) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" integrity="" crossorigin="anonymous"></script>
+    <script>
+        (function() {
+            const hero = document.querySelector('.hero');
+            if (!hero) return;
+
+            // create canvas container
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(60, hero.clientWidth / hero.clientHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            function resizeRenderer() {
+                const w = hero.clientWidth;
+                const h = Math.max(200, hero.clientHeight);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+                renderer.setSize(w, h, true);
+                camera.aspect = w / h;
+                camera.updateProjectionMatrix();
+            }
+
+            renderer.domElement.style.position = 'absolute';
+            renderer.domElement.style.top = '0';
+            renderer.domElement.style.left = '0';
+            renderer.domElement.style.zIndex = '1';
+            renderer.domElement.style.pointerEvents = 'none'; // ensure clicks pass through
+            hero.appendChild(renderer.domElement);
+
+            const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth < 700;
+            // Scale particle count down on mobile for performance
+            const particlesCnt = isMobile ? 180 : 520;
+            const positions = new Float32Array(particlesCnt * 3);
+            for (let i = 0; i < particlesCnt * 3; i++) positions[i] = (Math.random() - 0.5) * (isMobile ? 8 : 12);
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+            const material = new THREE.PointsMaterial({
+                size: isMobile ? 0.02 : 0.035,
+                color: 0x4da6ff,
+                transparent: true,
+                opacity: 0.8
+            });
+
+            const particles = new THREE.Points(geometry, material);
+            scene.add(particles);
+            camera.position.z = isMobile ? 6 : 5;
+
+            function animate() {
+                requestAnimationFrame(animate);
+                particles.rotation.y += 0.0009;
+                renderer.render(scene, camera);
+            }
+
+            // initial resize & animation
+            resizeRenderer();
+            animate();
+
+            // resize handler (debounced)
+            let rTO;
+            window.addEventListener('resize', () => {
+                clearTimeout(rTO);
+                rTO = setTimeout(() => {
+                    resizeRenderer();
+                }, 120);
+            }, { passive: true });
+        })();
+    </script>
+</body>
+</html>
