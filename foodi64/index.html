@@ -1,0 +1,778 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Foodi64 Tools</title>
+<style>
+    :root {
+    --bg: #f0f4f8;
+    --card: #ffffff;
+    --muted: #64748b;
+    --accent: #3b82f6;
+    --glass: rgba(0, 0, 0, 0.05);
+    --radius: 16px;
+    --shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: linear-gradient(180deg, #e2e8f0 0%, #f1f5f9 100%);
+    color: #1f2937;
+    margin: 0;
+    padding: 32px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .wrap {
+    max-width: 1100px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  header {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  header h1 {
+    font-size: 32px;
+    margin: 0;
+  }
+
+  header .meta {
+    font-size: 15px;
+    color: var(--muted);
+  }
+
+  .card {
+    background: var(--card);
+    padding: 24px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    word-break: break-word;
+  }
+
+  label {
+    font-size: 15px;
+    color: var(--muted);
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  textarea {
+    width: 100%;
+    min-height: 180px;
+    padding: 16px;
+    border-radius: var(--radius);
+    border: none;
+    background: var(--glass);
+    color: #1f2937;
+    resize: vertical;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  button {
+    background: var(--accent);
+    color: #ffffff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 15px;
+    transition: all 0.2s ease;
+  }
+
+  button:hover {
+    filter: brightness(1.1);
+    transform: scale(1.02);
+  }
+
+  .emoji-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+    gap: 8px;
+    padding: 12px;
+    background: var(--glass);
+    border-radius: var(--radius);
+  }
+
+  .emoji {
+    font-size: 26px;
+    padding: 8px;
+    text-align: center;
+    border-radius: var(--radius);
+    background: rgba(0,0,0,0.02);
+  }
+
+  .flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .right {
+    margin-left: auto;
+  }
+
+  .kbd {
+    background: #e2e8f0;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 14px;
+  }
+
+  .muted {
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .notice {
+    font-size: 14px;
+    color: #3b82f6;
+    background: rgba(59, 130, 246, 0.05);
+    padding: 10px;
+    border-radius: var(--radius);
+  }
+
+  a.link {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  footer {
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  /* === Side-by-side input/output === */
+  @media (min-width: 900px) {
+    #ui {
+      display: flex;
+      gap: 24px;
+    }
+    #ui > div:first-child, #ui > div:last-child {
+      flex: 1;
+    }
+    textarea {
+      min-height: 240px;
+    }
+  }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Foodi64 Tools</h1>
+  </header>
+
+  <!-- Food64 Section -->
+  <section class="card">
+    <h2>Foodi64 Encoder/Decoder</h2>
+    <div class="flex-between">
+      <div>
+        <label for="inputFood64">Input (text)</label>
+        <textarea id="inputFood64" placeholder="Type or paste text here"></textarea>
+        <div class="controls">
+          <button id="encodeFood64Btn" class="small">Encode → Foodi64</button>
+          <button id="decodeFood64Btn" class="small">Decode → Bytes/Text</button>
+          <button id="roundtripFood64Btn" class="small">Round-trip test</button>
+          <button id="clearFood64Btn" class="small">Clear</button>
+        </div>
+      </div>
+    </div>
+
+
+    <label for="outputFood64">Output</label>
+    <textarea id="outputFood64" placeholder="Encoded or decoded result appears here"></textarea>
+    <div class="controls" style="margin-top:8px">
+      <button id="copyFood64Out" class="small">Copy</button>
+      <button id="downloadFood64Out" class="small">Download</button>
+      <label class="muted right" id="infoFood64">—</label>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Foodi64 ↔ Base64 Converter</h2>
+    <textarea id="inputConverter" placeholder="Paste Foodi64 or Base64 here"></textarea>
+    <div class="controls">
+      <button id="f2bBtn">Foodi64 → Base64</button>
+      <button id="b2fBtn">Base64 → Foodi64</button>
+      <button id="copyConverter">Copy</button>
+      <button id="clearConverter">Clear</button>
+    </div>
+    <textarea id="outputConverter" placeholder="Output appears here"></textarea>
+  </section>
+
+  <!-- Base64 Section -->
+  <section class="card">
+    <h2>Base64 Encoder/Decoder</h2>
+    <textarea id="inputBase64" placeholder="Type something..."></textarea>
+    <div class="controls">
+      <button id="encodeBase64Btn">Encode</button>
+      <button id="decodeBase64Btn">Decode</button>
+    </div>
+    <textarea id="outputBase64" placeholder="Result..." readonly></textarea>
+  </section>
+
+  <section class="card">
+      <h2>What is Foodi64</h2>
+      <h5>Hello Noah here, so I made Foodi64 as a joke, but anyway I think it's still a good way to communicate with people who knows Foodi64 to hide from people who don't (🙃)</h5>
+      <h5>If you're interested in how it works, well very simple, just search how Base64 works, but instead of <br>
+      <strong>ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/</strong>, and <strong>=</strong> as padding, <br>
+we use <strong>🍏🍎🍐🍊🍋🍌🍉🍇🍓🫐🍈🍒🍑🥭🍍🥥🥝🍅🍆🥑🥦🥬🥒🌶️🫑🌽🥕🥔🧄🧅🍠🥐🥯🍞🥖🧀🥚🍳🥓🥩🍗🍖🌭🍔🍟🍕🫓🫔🍜🥗🥪🌮🌯🥙🧆🥟🍣🍱🍛🍲🍿🧁🍰🎂</strong>, and <strong>🤐</strong> as padding<br>
+      <h4>     -NoahLi404</h4>
+        <div id="base64-explainer" style="font-family: monospace; color: #eee; background:#1b1b1b; border-radius:12px; padding:20px; line-height:1.6;">
+          <h2 style="color:#00ffc3;">🔍 How Base64 Encoding Works (Example: "A")</h2>
+
+          <p><b>Step 1️⃣ Character to ASCII:</b><br>
+          "A" → <code style="color:#ffdd57;">65</code></p>
+
+          <p><b>Step 2️⃣ ASCII to Binary (8 bits):</b><br>
+          65 → <code style="color:#00c6ff;">01000001</code></p>
+
+          <p><b>Step 3️⃣ Combine bits (usually groups of 3 bytes):</b><br>
+          Since we only have one byte (8 bits), Foodi64 requires 24 bits total.<br>
+          We pad with zero bits to reach 24 → <code style="color:#ffdd57;">01000001 00000000 00000000</code></p>
+
+          <p><b>Step 4️⃣ Split into 6-bit groups:</b><br>
+          <code style="color:#00c6ff;">010000</code> |
+          <code style="color:#00c6ff;">010000</code> |
+          <code style="color:#888;">000000</code> |
+          <code style="color:#888;">000000</code></p>
+
+          <p><b>Step 5️⃣ Convert 6-bit groups to decimal:</b><br>
+          010000 → 16<br>
+          010000 → 16<br>
+          000000 → 0<br>
+          000000 → 0</p>
+
+          <p><b>Step 6️⃣ Map to Base64 Index Table:</b><br>
+          Index 16 → <code style="color:#00ffc3;">Q</code><br>
+          Index 16 → <code style="color:#00ffc3;">Q</code><br>
+          Index 0 → <code style="color:#888;">A</code> (but these will be padded)</p>
+          <code>Index Table: ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/</code>
+
+          <p><b>Step 7️⃣ Add padding (each "=" = 2 or 4 missing bytes):</b><br>
+          Result → <code style="color:#ffdd57;">QQ==</code></p>
+
+          <hr style="border:0; border-top:1px solid #333;">
+          <p><b>✅ Final Base64 Output:</b> <span style="color:#00ffc3; font-size:1.2em;">"QQ=="</span></p>
+
+          <p style="color:#aaa; font-size:0.9em;">
+          In short:<br>
+          "A" → 65 → 01000001 → 010000 010000 → 16 16 → Q Q → <b>QQ==</b>
+          </p>
+        </div>
+
+        <div id="foodi64-explainer" style="font-family: monospace; color: #eee; background:#1b1b1b; border-radius:12px; padding:20px; line-height:1.6;">
+          <h2 style="color:#00ffc3;">🔍 How Foodi64 Encoding Works (Example: "A")</h2>
+
+          <p><b>Step 1️⃣ Character to ASCII:</b><br>
+          "A" → <code style="color:#ffdd57;">65</code></p>
+
+          <p><b>Step 2️⃣ ASCII to Binary (8 bits):</b><br>
+          65 → <code style="color:#00c6ff;">01000001</code></p>
+
+          <p><b>Step 3️⃣ Combine bits (usually groups of 3 bytes):</b><br>
+          Since we only have one byte (8 bits), Base64 requires 24 bits total.<br>
+          We pad with zero bits to reach 24 → <code style="color:#ffdd57;">01000001 00000000 00000000</code></p>
+
+          <p><b>Step 4️⃣ Split into 6-bit groups:</b><br>
+          <code style="color:#00c6ff;">010000</code> |
+          <code style="color:#00c6ff;">010000</code> |
+          <code style="color:#888;">000000</code> |
+          <code style="color:#888;">000000</code></p>
+
+          <p><b>Step 5️⃣ Convert 6-bit groups to decimal:</b><br>
+          010000 → 16<br>
+          010000 → 16<br>
+          000000 → 0<br>
+          000000 → 0</p>
+
+          <p><b>Step 6️⃣ Map to Foodi64 Index Table:</b><br>
+          Index 16 → <code style="color:#00ffc3;">🥥</code><br>
+          Index 16 → <code style="color:#00ffc3;">🥥</code><br>
+          Index 0 → <code style="color:#888;">🍏</code> (but these will be padded)</p>
+          <code>Index Table: 🍏🍎🍐🍊🍋🍌🍉🍇🍓🫐🍈🍒🍑🥭🍍🥥🥝🍅🍆🥑🥦🥬🥒🌶️🫑🌽🥕🥔🧄🧅🍠🥐🥯🍞🥖🧀🥚🍳🥓🥩🍗🍖🌭🍔🍟🍕🫓🫔🍜🥗🥪🌮🌯🥙🧆🥟🍣🍱🍛🍲🍿🧁🍰🎂</code>
+
+          <p><b>Step 7️⃣ Add padding (each "🤐" = 2 or 4 missing bytes):</b><br>
+          Result → <code style="color:#ffdd57;">🥥🥥🤐🤐</code></p>
+
+          <hr style="border:0; border-top:1px solid #333;">
+          <p><b>✅ Final Foodi64 Output:</b> <span style="color:#00ffc3; font-size:1.2em;">">🥥🥥🤐🤐"</span></p>
+
+          <p style="color:#aaa; font-size:0.9em;">
+          In short:<br>
+          "A" → 65 → 01000001 → 010000 010000 → 16 16 → > 🥥 🥥 → <b>>🥥🥥🤐🤐</b>
+          </p>
+        </div>
+
+      </h5>
+
+
+
+  </section>
+</div>
+
+<script>
+/*
+  Combined script for all tools
+*/
+
+/* ----- Default alphabet: 64 food symbols ----- */
+const DEFAULT_ALPHABET = [
+  "🍏","🍎","🍐","🍊","🍋","🍌","🍉","🍇","🍓","🫐","🍈","🍒","🍑","🥭","🍍","🥥",
+  "🥝","🍅","🍆","🥑","🥦","🥬","🥒","🌶️","🫑","🌽","🥕","🥔","🧄","🧅","🍠","🥐",
+  "🥯","🍞","🥖","🧀","🥚","🍳","🥓","🥩","🍗","🍖","🌭","🍔","🍟","🍕","🫓","🫔",
+  "🍜","🥗","🥪","🌮","🌯","🥙","🧆","🥟","🍣","🍱","🍛","🍲","🍿","🧁","🍰","🎂"
+];
+const DEFAULT_PAD = "🤐";
+
+let alphabet = DEFAULT_ALPHABET.slice();
+let pad = DEFAULT_PAD;
+
+/* Helpers: encoder/decoder of bytes */
+const textEncoder = new TextEncoder();
+const textDecoder = new TextDecoder("utf-8", { fatal: false });
+
+/* Tokenize encoded string into emoji symbols (greedy by longest match) */
+function tokenizeEncodedString(s){
+  let input = s.replace(/\s+/g,'');
+  if (input.length === 0) return [];
+  const tokens = alphabet.concat([pad]);
+  const sorted = tokens.slice().sort((a,b)=>b.length - a.length);
+  const out = [];
+  let i = 0;
+  while (i < input.length){
+    let matched = null;
+    for (const t of sorted){
+      if (input.startsWith(t, i)){
+        matched = t;
+        break;
+      }
+    }
+    if (!matched){
+      const sample = input.slice(i, i+8);
+      throw new Error(`Invalid token at position ${i}. Context: ${JSON.stringify(sample)}`);
+    }
+    out.push(matched);
+    i += matched.length;
+  }
+  return out;
+}
+
+/* Encode bytes (Uint8Array) to Food64 string */
+function encodeBytesToFood64(bytes){
+  if (!Array.isArray(alphabet) || alphabet.length !== 64) throw new Error("Alphabet invalid");
+  const out = [];
+  for (let i=0;i<bytes.length;i+=3){
+    const b1 = bytes[i];
+    const b2 = (i+1 < bytes.length) ? bytes[i+1] : 0;
+    const b3 = (i+2 < bytes.length) ? bytes[i+2] : 0;
+    const v1 = (b1 >> 2) & 0x3F;
+    const v2 = ((b1 & 0x03) << 4) | ((b2 >> 4) & 0x0F);
+    const v3 = ((b2 & 0x0F) << 2) | ((b3 >> 6) & 0x03);
+    const v4 = b3 & 0x3F;
+    out.push(alphabet[v1], alphabet[v2]);
+    if (i+1 < bytes.length) out.push(alphabet[v3]); else out.push(pad);
+    if (i+2 < bytes.length) out.push(alphabet[v4]); else out.push(pad);
+  }
+  return out.join('');
+}
+
+/* Decode tokens array to Uint8Array bytes */
+function decodeTokensToBytes(tokens){
+  if (tokens.length % 4 !== 0) throw new Error("Encoded length must be multiple of 4 tokens");
+  const map = new Map();
+  for (let i=0;i<alphabet.length;i++) map.set(alphabet[i], i);
+  const bytes = [];
+  for (let i=0;i<tokens.length;i+=4){
+    const t1 = tokens[i], t2 = tokens[i+1], t3 = tokens[i+2], t4 = tokens[i+3];
+    if (t1 === pad || t2 === pad) throw new Error("Invalid padding position");
+    const v1 = map.get(t1);
+    const v2 = map.get(t2);
+    const v3 = (t3 === pad) ? null : map.get(t3);
+    const v4 = (t4 === pad) ? null : map.get(t4);
+    if (v1 === undefined || v2 === undefined || (v3===null?false:(v3===undefined)) || (v4===null?false:(v4===undefined))){
+      throw new Error("Found symbol not in alphabet");
+    }
+    const b1 = (v1 << 2) | (v2 >> 4);
+    bytes.push(b1 & 0xFF);
+    if (t3 !== pad){
+      const b2 = ((v2 & 0x0F) << 4) | (v3 >> 2);
+      bytes.push(b2 & 0xFF);
+    }
+    if (t4 !== pad){
+      const b3 = ((v3 & 0x03) << 6) | v4;
+      bytes.push(b3 & 0xFF);
+    }
+  }
+  return new Uint8Array(bytes);
+}
+
+/* Public API: encode string (text) */
+function encodeStringToFood64(str){
+  const bytes = textEncoder.encode(str);
+  return encodeBytesToFood64(bytes);
+}
+
+/* Public API: decode Food64 string to UTF-8 string (if valid) or return hex if non-UTF-8 */
+function decodeFood64ToString(s){
+  const tokens = tokenizeEncodedString(s);
+  if (tokens.length === 0) return "";
+  const bytes = decodeTokensToBytes(tokens);
+  try {
+    const decoded = textDecoder.decode(bytes);
+    return decoded;
+  } catch (e){
+    return Array.from(bytes).map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+}
+
+/* Food64 Section Event handlers */
+const inputFood64 = document.getElementById("inputFood64");
+const outputFood64 = document.getElementById("outputFood64");
+const encodeFood64Btn = document.getElementById("encodeFood64Btn");
+const decodeFood64Btn = document.getElementById("decodeFood64Btn");
+const roundtripFood64Btn = document.getElementById("roundtripFood64Btn");
+const clearFood64Btn = document.getElementById("clearFood64Btn");
+const copyFood64Out = document.getElementById("copyFood64Out");
+const downloadFood64Out = document.getElementById("downloadFood64Out");
+const infoFood64 = document.getElementById("infoFood64");
+
+function setInfoFood64(msg){
+  infoFood64.textContent = msg;
+}
+
+encodeFood64Btn.addEventListener("click", ()=>{
+  try {
+    const value = inputFood64.value || "";
+    const out = encodeStringToFood64(value);
+    outputFood64.value = out;
+    setInfoFood64(`Encoded ${value.length} characters → ${out.length} emoji symbols`);
+  } catch (e){
+    alert("Encode error: "+e.message);
+  }
+});
+
+decodeFood64Btn.addEventListener("click", ()=>{
+  try {
+    const value = inputFood64.value || outputFood64.value || "";
+    if (!value) { alert("No encoded text to decode (put it in input or output area)."); return; }
+    const decoded = decodeFood64ToString(value.trim());
+    outputFood64.value = decoded;
+    setInfoFood64(`Decoded → ${decoded.length} characters`);
+  } catch (e){
+    alert("Decode error: "+e.message);
+  }
+});
+
+roundtripFood64Btn.addEventListener("click", ()=>{
+  try {
+    const sample = inputFood64.value || "Hello, Foodi64! 🍕";
+    const e = encodeStringToFood64(sample);
+    const d = decodeFood64ToString(e);
+    const ok = (d === sample);
+    outputFood64.value = `INPUT:\n${sample}\n\nENCODED:\n${e}\n\nDECODED:\n${d}\n\nRound-trip OK: ${ok}`;
+    setInfoFood64(`Roundtrip test: ${ok ? "PASS" : "FAIL"}`);
+  } catch (err){
+    alert("Roundtrip error: "+err.message);
+  }
+});
+
+clearFood64Btn.addEventListener("click", ()=>{
+  inputFood64.value = "";
+  outputFood64.value = "";
+  setInfoFood64("Cleared");
+});
+
+copyFood64Out.addEventListener("click", async ()=>{
+  try{
+    await navigator.clipboard.writeText(outputFood64.value);
+    setInfoFood64("Copied to clipboard");
+  }catch(e){
+    alert("Copy failed: "+e.message);
+  }
+});
+
+downloadFood64Out.addEventListener("click", ()=>{
+  const blob = new Blob([outputFood64.value], {type:"text/plain;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "food64.txt";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  setInfoFood64("Download started");
+});
+
+/* Converter Section */
+const inputConverter = document.getElementById("inputConverter");
+const outputConverter = document.getElementById("outputConverter");
+const f2bBtn = document.getElementById("f2bBtn");
+const b2fBtn = document.getElementById("b2fBtn");
+const copyConverter = document.getElementById("copyConverter");
+const clearConverter = document.getElementById("clearConverter");
+
+f2bBtn.onclick=()=>{
+  try{
+    const bytes=decodeTokensToBytes(tokenizeEncodedString(document.getElementById("inputConverter").value.trim()));
+    document.getElementById("outputConverter").value=btoa(String.fromCharCode(...bytes));
+  }catch(e){ alert(e.message); }
+};
+
+b2fBtn.onclick=()=>{
+  try{
+    const b64=document.getElementById("inputConverter").value.trim();
+    const bytes=Uint8Array.from(atob(b64),c=>c.charCodeAt(0));
+    document.getElementById("outputConverter").value=encodeBytesToFood64(bytes);
+  }catch(e){ alert(e.message); }
+};
+
+copyConverter.onclick=()=>navigator.clipboard.writeText(document.getElementById("outputConverter").value);
+clearConverter.onclick=()=>{ document.getElementById("inputConverter").value=""; document.getElementById("outputConverter").value=""; };
+
+/* Base64 Section */
+const inputBase64 = document.getElementById('inputBase64');
+const outputBase64 = document.getElementById('outputBase64');
+const encodeBase64Btn = document.getElementById('encodeBase64Btn');
+const decodeBase64Btn = document.getElementById('decodeBase64Btn');
+
+encodeBase64Btn.onclick = () => {
+    const text = inputBase64.value;
+    try {
+        const encoded = btoa(unescape(encodeURIComponent(text)));
+        outputBase64.value = encoded;
+    } catch(e) {
+        outputBase64.value = "Invalid characters! 🤯";
+    }
+};
+
+decodeBase64Btn.onclick = () => {
+    const text = inputBase64.value;
+    try {
+        const decoded = decodeURIComponent(escape(atob(text)));
+        outputBase64.value = decoded;
+    } catch(e) {
+        outputBase64.value = "Invalid Base64! 🤔";
+    }
+};
+
+/* Initialize */
+(function init(){
+  setInfoFood64("Ready");
+  inputFood64.value = "Hello, Foodi64! 🍕 — type here.";
+})();
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- hello
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+dont scroll down
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+i said stop!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+why arent u listening?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+hi! -->
+
+
+
+
+
+
